@@ -1,0 +1,12 @@
+.addUserForm {
+    max-height: 0;
+    opacity: 0;
+    text-align: right;
+    transition: all 1s ;
+    overflow: hidden;
+}
+
+.addUserFormShow {
+    opacity: 1;
+    max-height: 455px;
+}
