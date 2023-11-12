@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React, { FC, useCallback } from 'react'
 import CloseIcon from '@/assets/close.svg?react'
 import { useActions } from '@/common/hooks/useActions'
 import { getSelectedUser, usersActions } from '@/store/slices/users'
@@ -8,7 +8,7 @@ import Box from '@mui/material/Box'
 import Card from '@mui/material/Card'
 import Stack from '@mui/material/Stack'
 
-export const UserInfo: React.FC = () => {
+export const UserInfo: FC = () => {
   const user = useSelector(getSelectedUser)
   const {setSelectedUser} = useActions(usersActions)
 
