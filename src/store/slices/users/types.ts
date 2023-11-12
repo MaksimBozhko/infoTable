@@ -1,10 +1,12 @@
 export interface IData<D = []> {
   data: D[]
+  users: D[]
   error: string
   viewSize: ViewSizeType
   filter: string
   selectedUser?: IUser | null
   isNotification?: boolean
+  isLoading: boolean
 }
 
 export enum ViewSizeType {

@@ -1,25 +1,42 @@
-import { FC, memo, useCallback } from 'react'
+import { FC, memo, useCallback, useEffect } from 'react'
 import { columns } from './const'
-import { filterUsers } from './filter'
 import { SizeSwitch } from '@/ui'
 import { Table } from '@/components/table'
+import { filterUsers } from './filter'
 import { useActions } from '@/common/hooks/useActions'
-import { getData, getFilter, getViewSize, usersActions, IUser } from '@/store/slices/users'
+import {
+  getIsLoading,
+  getUsers,
+  getData,
+  getFilter,
+  getViewSize,
+  IUser,
+  usersThunks,
+  usersActions
+} from '@/store/slices/users'
 import { useSelector } from 'react-redux'
 import { GridRowParams } from '@mui/x-data-grid'
 import Toolbar from '@mui/material/Toolbar'
 import Typography from '@mui/material/Typography'
-import { useGetDataQuery } from '@/store/slices/users/usersApi'
 
 export const PersonTable: FC = memo(() => {
 
+  const {setSelectedUser} = useActions(usersActions)
+  const {fetchData} = useActions(usersThunks)
+
   const viewSize = useSelector(getViewSize)
   const addedUsers = useSelector(getData)
+  const users = useSelector(getUsers)
+  const isLoading = useSelector(getIsLoading)
   const filterValue = useSelector(getFilter)
-  const {data, isFetching} = useGetDataQuery(viewSize)
-  const {setSelectedUser} = useActions(usersActions)
 
-  const filteredData = filterUsers(data, addedUsers, filterValue)
+  useEffect(() => {
+    fetchData(viewSize)
+  }, [fetchData, viewSize])
+
+  // const {data, isFetching} = useGetDataQuery(viewSize)
+
+  const filteredData = filterUsers(users, addedUsers, filterValue)
 
   const rowsPerPageOptions = Array.from(new Set([5, 10, 15, 25]))
 
@@ -44,7 +61,7 @@ export const PersonTable: FC = memo(() => {
       <Table
         rows={filteredData}
         columns={columns}
-        isLoading={isFetching}
+        isLoading={isLoading}
         onClickRow={clickRowHandler}
         rowsPerPageOptions={rowsPerPageOptions}
       />
